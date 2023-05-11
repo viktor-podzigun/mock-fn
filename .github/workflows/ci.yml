@@ -33,7 +33,7 @@ jobs:
           ~/.nvm
           ~/work/mock-fn/mock-fn/node_modules
           ~/work/mock-fn/mock-fn/package-lock.json
-        key: ${{ runner.os }}-node_modules-cache-v3-${{ hashFiles('**/package-lock.json') }}
+        key: ${{ runner.os }}-node_modules-cache-v3-${{ hashFiles('package.json') }}
         restore-keys: |
           ${{ runner.os }}-node_modules-cache-v3-
 
