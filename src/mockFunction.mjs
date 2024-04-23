@@ -1,5 +1,5 @@
 /**
- * @type { import('./mockFunction').default }
+ * @type { import("./mockFunction.mjs").default }
  */
 function mockFunction(impl) {
   // @ts-ignore

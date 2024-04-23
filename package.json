@@ -11,7 +11,7 @@
   },
   "type": "module",
   "exports": "./src/mockFunction.mjs",
-  "types": "./src/mockFunction.d.ts",
+  "types": "./src/mockFunction.d.mts",
   "private": false,
   "publishConfig": {
     "access": "public"
