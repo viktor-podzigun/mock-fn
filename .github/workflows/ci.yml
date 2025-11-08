@@ -10,31 +10,36 @@ on:
   pull_request:
     branches: [main]
 
+permissions:
+  id-token: write # Required for OIDC
+  contents: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Git checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "24"
+          registry-url: "https://registry.npmjs.org"
 
       - name: Cache node_modules
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/.npm
             ~/.nvm
             ~/work/mock-fn/mock-fn/node_modules
             ~/work/mock-fn/mock-fn/package-lock.json
-          key: ${{ runner.os }}-node_modules-cache-v3-${{ hashFiles('package.json') }}
+          key: ${{ runner.os }}-node_modules-cache-v4-${{ hashFiles('package.json') }}
           restore-keys: |
-            ${{ runner.os }}-node_modules-cache-v3-
+            ${{ runner.os }}-node_modules-cache-v4-
 
       - name: Extract Tag Name
         run: echo "TAG_NAME=$(echo ${GITHUB_REF##*/})" >> $GITHUB_ENV
@@ -62,8 +67,5 @@ jobs:
           echo "Publish a release version=$VERSION for tag $TAG_NAME"
           npm --no-git-tag-version --allow-same-version version $VERSION
           npm pack
-          echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > .npmrc
           npm publish mock-fn-${VERSION}.tgz
         if: ${{ env.TAG_NAME != '' }}
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
